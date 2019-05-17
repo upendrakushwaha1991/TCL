@@ -33,6 +33,7 @@ public class CommonString {
     public static final String KEY_ID = "Id";
     public static final String KEY_IID = "KEY_ID";
     public static final String TAG_OBJECT = "OBJECT";
+    public static final String KEY_LIST = "List";
     public static final String TAG_WINDOW_OBJECT = "WINDOW_OBJECT";
 
     public static final String KEY_DOWNLOAD_INDEX = "download_Index";

@@ -24,9 +24,11 @@ import android.widget.TextView;
 import com.cpm.Marico.R;
 import com.cpm.Marico.adapter.SkuListAdapter;
 import com.cpm.Marico.database.MaricoDatabase;
+import com.cpm.Marico.getterSetter.ClosingStockData;
 import com.cpm.Marico.getterSetter.JourneyPlan;
 import com.cpm.Marico.getterSetter.MenuMaster;
 import com.cpm.Marico.getterSetter.StockNewGetterSetter;
+import com.cpm.Marico.utilities.AlertandMessages;
 import com.cpm.Marico.utilities.CommonString;
 
 import java.io.File;
@@ -45,6 +47,7 @@ public class CheckOutConfirmationActivity extends AppCompatActivity {
     SkuListAdapter skuAdapter;
     Button btnYes,btnNo;
     MenuMaster menuMaster;
+    ClosingStockData closingStockData;
     LinearLayout sale_layout;
     File file;
 
@@ -53,8 +56,9 @@ public class CheckOutConfirmationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_out_confirmation);
 
-        if (getIntent().getSerializableExtra(CommonString.TAG_OBJECT) != null  && getIntent().getSerializableExtra(CommonString.KEY_MENU_ID) != null) {
+        if (getIntent().getSerializableExtra(CommonString.TAG_OBJECT) != null  && getIntent().getSerializableExtra(CommonString.KEY_MENU_ID) != null && getIntent().getSerializableExtra(CommonString.KEY_LIST) != null) {
             jcpGetset  = (JourneyPlan) getIntent().getSerializableExtra(CommonString.TAG_OBJECT);
+            closingStockData = (ClosingStockData) getIntent().getSerializableExtra(CommonString.KEY_LIST);
             tag_from   = getIntent().getStringExtra(CommonString.TAG_FROM);
             menuMaster = (MenuMaster) getIntent().getSerializableExtra(CommonString.KEY_MENU_ID);
         }
@@ -95,7 +99,7 @@ public class CheckOutConfirmationActivity extends AppCompatActivity {
 
         db = new MaricoDatabase(getApplicationContext());
         db.open();
-        stockList =  db.getstockInsertedStoreDetails(jcpGetset);
+        stockList =  db.getstockInsertedStoreDetails(jcpGetset,closingStockData.getHashMapData(),closingStockData.getStockList());
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         visit_date  = preferences.getString(CommonString.KEY_DATE, null);
@@ -113,7 +117,6 @@ public class CheckOutConfirmationActivity extends AppCompatActivity {
         sku_view.setHasFixedSize(true);
         sku_view.setLayoutManager(new LinearLayoutManager(this));
         sku_view.setAdapter(skuAdapter);
-
     }
 
     private File saveBitMapImage(CheckOutConfirmationActivity context, LinearLayout drawView) {
@@ -134,14 +137,27 @@ public class CheckOutConfirmationActivity extends AppCompatActivity {
             oStream.flush();
             oStream.close();
 
-            Intent intent = new Intent(CheckOutConfirmationActivity.this,EntryMenuActivity.class);
-            intent.putExtra(CommonString.TAG_OBJECT, jcpGetset);
-            intent.putExtra(CommonString.TAG_FROM, tag_from);
-            intent.putExtra(CommonString.KEY_STATUS, "1");
-            intent.putExtra(CommonString.KEY_IMAGE, pictureFile.getName());
-            startActivity(intent);
-            overridePendingTransition(R.anim.activity_back_in, R.anim.activity_back_out);
-            finish();
+            if (getIntent().getSerializableExtra(CommonString.KEY_LIST) != null) {
+                closingStockData = (ClosingStockData) getIntent().getSerializableExtra(CommonString.KEY_LIST);
+                db.open();
+                long val =  db.UpdateClosingStocklistData(jcpGetset, closingStockData.getHashMapData(), closingStockData.getStockList());
+                if(val > 0){
+                    Intent intent = new Intent(CheckOutConfirmationActivity.this,EntryMenuActivity.class);
+                    intent.putExtra(CommonString.TAG_OBJECT, jcpGetset);
+                    intent.putExtra(CommonString.TAG_FROM, tag_from);
+                    intent.putExtra(CommonString.KEY_STATUS, "1");
+                    intent.putExtra(CommonString.KEY_IMAGE, pictureFile.getName());
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.activity_back_in, R.anim.activity_back_out);
+                    finish();
+                }else{
+                    AlertandMessages.showToastMsg(context,"Data not saved");
+                    overridePendingTransition(R.anim.activity_back_in, R.anim.activity_back_out);
+                    finish();
+                }
+            }
+
+
 
         } catch (IOException e) {
             e.printStackTrace();

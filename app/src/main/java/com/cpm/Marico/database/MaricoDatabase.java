@@ -4876,11 +4876,13 @@ public class MaricoDatabase extends SQLiteOpenHelper {
         return list;
     }
 
+
     //Update Closing Data with Brand
-    public void UpdateClosingStocklistData(JourneyPlan jcp,
+
+    public long UpdateClosingStocklistData(JourneyPlan jcp,
                                            HashMap<StockNewGetterSetter, List<StockNewGetterSetter>> data,
                                            List<StockNewGetterSetter> save_listDataHeader) {
-
+        long val = 0;
         ContentValues values1 = new ContentValues();
 
         try {
@@ -4891,8 +4893,7 @@ public class MaricoDatabase extends SQLiteOpenHelper {
             for (int i = 0; i < list.size(); i++) {
                 for (int j = 0; j < data.get(save_listDataHeader.get(i)).size(); j++) {
                     values1.put("CLOSING_STOCK", data.get(save_listDataHeader.get(i)).get(j).getEd_closingFacing());
-
-                    db.update(CommonString.TABLE_STOCK_DATA, values1, "Common_Id" + "='" + Integer.parseInt(list.get(i).getKeyId()) + "' AND SKU_CD " + "='" + data.get(save_listDataHeader.get(i)).get(j).getSku_cd() + "'", null);
+                    val =  db.update(CommonString.TABLE_STOCK_DATA, values1, "Common_Id" + "='" + Integer.parseInt(list.get(i).getKeyId()) + "' AND SKU_CD " + "='" + data.get(save_listDataHeader.get(i)).get(j).getSku_cd() + "'", null);
                 }
             }
             db.setTransactionSuccessful();
@@ -4900,7 +4901,9 @@ public class MaricoDatabase extends SQLiteOpenHelper {
         } catch (Exception ex) {
             Log.d("Database", " Exception while Insert Posm Master Data " + ex.toString());
         }
+        return val;
     }
+
 
     //sos insert data
     public ArrayList<ShareOfShelfGetterSetter> getHeaderShareOfSelfImageData(String store_cd) {
@@ -6680,12 +6683,16 @@ public long insertmarketintelligenceData(JourneyPlan jcp, String user_name,Array
     }
 
 
-    public ArrayList<StockNewGetterSetter> getstockInsertedStoreDetails(JourneyPlan jcp) {
+    public ArrayList<StockNewGetterSetter> getstockInsertedStoreDetails(JourneyPlan jcp, HashMap<StockNewGetterSetter, List<StockNewGetterSetter>> data, List<StockNewGetterSetter> save_listDataHeader) {
         Log.d("Fetching", "Storedata--------------->Start<------------");
         ArrayList<StockNewGetterSetter> list = new ArrayList<StockNewGetterSetter>();
+        String skuId = "",closing_stock = "";
         Cursor dbcursor = null;
 
         try {
+
+            ArrayList<HeaderGetterSetter> list1 = new ArrayList<>();
+            list1 = getHeaderStock(jcp.getStoreId());
 
             dbcursor = db.rawQuery("Select * from "+CommonString.TABLE_STOCK_DATA+" where STORE_ID = "+jcp.getStoreId()+"", null);
 
@@ -6696,7 +6703,18 @@ public long insertmarketintelligenceData(JourneyPlan jcp, String user_name,Array
                     sb.setSku(dbcursor.getString(dbcursor.getColumnIndexOrThrow("SKU")));
                     sb.setEd_midFacing(dbcursor.getString(dbcursor.getColumnIndexOrThrow("MIDDAY_STOCK")));
                     sb.setOpening_facing(dbcursor.getString(dbcursor.getColumnIndexOrThrow("OPENING_STOCK")));
-                    sb.setClosing_stock(dbcursor.getString(dbcursor.getColumnIndexOrThrow("CLOSING_STOCK")));
+                    skuId =  dbcursor.getString(dbcursor.getColumnIndexOrThrow("SKU_CD"));
+
+                    for (int i = 0; i < list1.size(); i++) {
+                        for (int j = 0; j < data.get(save_listDataHeader.get(i)).size(); j++) {
+                            if(data.get(save_listDataHeader.get(i)).get(j).getSku_cd().equalsIgnoreCase(skuId)) {
+                                closing_stock =   data.get(save_listDataHeader.get(i)).get(j).getEd_closingFacing();
+                                break;
+                            }
+                        }
+                    }
+
+                    sb.setClosing_stock(closing_stock);
 
                     list.add(sb);
                     dbcursor.moveToNext();
@@ -6712,6 +6730,7 @@ public long insertmarketintelligenceData(JourneyPlan jcp, String user_name,Array
         Log.d("Fetching", " opening stock---------------------->Stop<-----------");
         return list;
     }
+
 
     public boolean insertPerformancedata(PerformancePageGetterSetter data) {
         db.delete("Performance", null, null);

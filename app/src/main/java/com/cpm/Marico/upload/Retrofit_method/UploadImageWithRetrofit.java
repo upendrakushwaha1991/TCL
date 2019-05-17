@@ -1266,7 +1266,6 @@ public class UploadImageWithRetrofit extends ReferenceVariablesForDownloadActivi
 
         @Override
         protected String doInBackground(String... strings) {
-
             try {
                 downloadImages();
                 return CommonString.KEY_SUCCESS;

@@ -17,20 +17,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.cpm.Marico.R;
 import com.cpm.Marico.database.MaricoDatabase;
+import com.cpm.Marico.getterSetter.ClosingStockData;
 import com.cpm.Marico.getterSetter.JourneyPlan;
 import com.cpm.Marico.getterSetter.MenuMaster;
 import com.cpm.Marico.getterSetter.StockNewGetterSetter;
@@ -65,11 +64,13 @@ public class ClosingStock extends AppCompatActivity implements View.OnClickListe
     String visit_date, username, intime,tag_from="";
     JourneyPlan jcpGetset;
     MenuMaster menuMaster;
+    ClosingStockData closingStockData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_closing_stock);
+
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
         btnSave = (FloatingActionButton) findViewById(R.id.save_btn);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -183,7 +184,6 @@ public class ClosingStock extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-
     }
 
     //Preparing the list data
@@ -222,14 +222,20 @@ public class ClosingStock extends AppCompatActivity implements View.OnClickListe
             if (!checkpopup) {
                 flagcoldroom = flagmccain = flagstoredf = false;
                 if (validateData(listDataChild, listDataHeader)) {
-                    db.open();
-                    db.UpdateClosingStocklistData(jcpGetset, listDataChild, listDataHeader);
+
                     Intent intent = new Intent(ClosingStock.this,CheckOutConfirmationActivity.class);
                     intent.putExtra(CommonString.TAG_OBJECT,jcpGetset);
                     intent.putExtra(CommonString.KEY_MENU_ID, menuMaster);
                     intent.putExtra(CommonString.TAG_FROM, tag_from);
+
+                    closingStockData = new ClosingStockData();
+                    closingStockData.setHashMapData(listDataChild);
+                    closingStockData.setStockList(listDataHeader);
+
+                    intent.putExtra(CommonString.KEY_LIST, closingStockData);
+
                     startActivity(intent);
-                  //  Snackbar.make(expListView, "Data has been saved", Snackbar.LENGTH_LONG).show();
+                    //  Snackbar.make(expListView, "Data has been saved", Snackbar.LENGTH_LONG).show();
                     overridePendingTransition(R.anim.activity_back_in, R.anim.activity_back_out);
                     finish();
                 } else {
@@ -555,6 +561,4 @@ public class ClosingStock extends AppCompatActivity implements View.OnClickListe
 
         return super.onOptionsItemSelected(item);
     }
-
-
 }
