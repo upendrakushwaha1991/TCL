@@ -1,9 +1,11 @@
 package com.cpm.Marico.getterSetter;
 
+import java.io.Serializable;
+
 /**
  * Created by yadavendras on 24-12-2015.
  */
-public class StockNewGetterSetter {
+public class StockNewGetterSetter implements Serializable {
     String openning_total_stock;
     String opening_facing;
     String total_mid_stock_received;
