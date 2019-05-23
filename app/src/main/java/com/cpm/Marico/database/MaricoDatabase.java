@@ -175,6 +175,8 @@ public class MaricoDatabase extends SQLiteOpenHelper {
         db.delete(CommonString.TABLE_PROMOTION_CHILD_DATA, CommonString.KEY_STORE_ID + "='" + storeid + "'", null);
         db.delete(CommonString.TABLE_PAID_VISIBILITY_HEADER_DATA, CommonString.KEY_STORE_ID + "='" + storeid + "'", null);
         db.delete(CommonString.TABLE_PAID_VISIBILITY_CHILD_DATA, CommonString.KEY_STORE_ID + "='" + storeid + "'", null);
+        db.delete(CommonString.TABLE_TESTER_STOCK_DATA, CommonString.KEY_STORE_ID + "='" + storeid + "'", null);
+
     }
 
     public void deletePreviousUploadedData(String visit_date) {
@@ -202,6 +204,7 @@ public class MaricoDatabase extends SQLiteOpenHelper {
                     db.delete(CommonString.TABLE_PROMOTION_CHILD_DATA, null, null);
                     db.delete(CommonString.TABLE_PAID_VISIBILITY_HEADER_DATA, null, null);
                     db.delete(CommonString.TABLE_PAID_VISIBILITY_CHILD_DATA, null, null);
+                    db.delete(CommonString.TABLE_TESTER_STOCK_DATA, null, null);
                 }
                 dbcursor.close();
             }
@@ -862,19 +865,36 @@ public class MaricoDatabase extends SQLiteOpenHelper {
         return l;
     }
 
+/*
     public long updateStoreStatusOnLeave(String storeid, String visitdate, String status) {
         long id = 0;
         try {
             ContentValues values = new ContentValues();
             values.put("Upload_Status", status);
-            id = db.update(CommonString.TABLE_Journey_Plan, values, "Strore_Id" + "='" + storeid + "' AND "
-                    + CommonString.KEY_VISIT_DATE + "='" + visitdate
-                    + "'", null);
+            id = db.update(CommonString.TABLE_Journey_Plan, values, "Strore_Id" + "='" + storeid + "' AND " + CommonString.KEY_VISIT_DATE + "='" + visitdate + "'", null);
             return id;
         } catch (Exception e) {
             return 0;
         }
     }
+*/
+   public long updateStoreStatusOnLeave(String storeid, String visitdate, String status) {
+       long id = 0;
+       try {
+           ContentValues values = new ContentValues();
+           values.put("UPLOAD_STATUS", status);
+           id = db.update(CommonString.TABLE_Journey_Plan, values, CommonString.KEY_STORE_ID + "='" + storeid + "' AND "
+                   + CommonString.KEY_VISIT_DATE + "='" + visitdate
+                   + "'", null);
+           return id;
+       } catch (Exception e) {
+           return 0;
+       }
+   }
+
+
+
+
 
     public boolean insertJCPData(JCPGetterSetter data) {
         db.delete("Journey_Plan", null, null);

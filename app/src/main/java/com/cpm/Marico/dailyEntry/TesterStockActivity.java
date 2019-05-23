@@ -8,6 +8,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -100,10 +101,18 @@ public class TesterStockActivity extends AppCompatActivity {
 
         database.open();
         testerStockList = database.getInsertedTestStockData(store_id,visit_date);
-        if(testerStockList.size() == 0) {
+
+        if (!(testerStockList.size() > 0)) {
+            testerStockList = database.getTesterStockData(journeyPlan.getStoreTypeId(), journeyPlan.getStateId(), journeyPlan.getStoreCategoryId());
+        } else {
+            fab.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.edit_txt));
+        }
+
+
+       /* if(testerStockList.size() == 0) {
             database.open();
             testerStockList = database.getTesterStockData(journeyPlan.getStoreTypeId(), journeyPlan.getStateId(), journeyPlan.getStoreCategoryId());
-        }
+        }*/
 
         adapter = new TesterStockAdapter(testerStockList);
         recyclerView.setHasFixedSize(true);

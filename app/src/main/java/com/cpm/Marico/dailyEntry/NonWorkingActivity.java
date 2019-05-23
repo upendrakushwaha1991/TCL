@@ -255,6 +255,7 @@ public class NonWorkingActivity extends AppCompatActivity implements AdapterView
                     reasonid = reasondata.get(position - 1).getReasonId().toString();
                     entry_allow = reasondata.get(position - 1).getEntryAllow().toString();
                     image_allow = reasondata.get(position - 1).getImageAllow().toString();
+                    camera.setImageDrawable(getResources().getDrawable(R.mipmap.camera_pink));
                     if (image_allow.equalsIgnoreCase("true")) {
                         rel_cam.setVisibility(View.VISIBLE);
                     } else {

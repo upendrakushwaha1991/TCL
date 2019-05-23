@@ -79,6 +79,7 @@ public class CheckOutConfirmationActivity extends AppCompatActivity {
                 intent.putExtra(CommonString.TAG_OBJECT, jcpGetset);
                 intent.putExtra(CommonString.KEY_MENU_ID, menuMaster);
                 intent.putExtra(CommonString.TAG_FROM, tag_from);
+                intent.putExtra(CommonString.KEY_LIST,closingStockData);
                 startActivity(intent);
                 overridePendingTransition(R.anim.activity_back_in, R.anim.activity_back_out);
                 finish();

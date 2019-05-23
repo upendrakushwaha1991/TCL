@@ -88,11 +88,22 @@ public class ClosingStock extends AppCompatActivity implements View.OnClickListe
             jcpGetset = (JourneyPlan) getIntent().getSerializableExtra(CommonString.TAG_OBJECT);
             menuMaster = (MenuMaster) getIntent().getSerializableExtra(CommonString.KEY_MENU_ID);
             tag_from   = getIntent().getStringExtra(CommonString.TAG_FROM);
+
+            // checking closing stock list data comes from checkout confirmation No
+            if(getIntent().getSerializableExtra(CommonString.KEY_LIST) != null) {
+                closingStockData = (ClosingStockData) getIntent().getSerializableExtra(CommonString.KEY_LIST);
+            }
         }
 
         // preparing list data
         prepareListData();
-        listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
+
+        if(closingStockData != null){
+            listAdapter = new ExpandableListAdapter(this,closingStockData.getStockList(),closingStockData.getHashMapData());
+        }else{
+            listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
+        }
+
         // setting list adapter
         expListView.setAdapter(listAdapter);
         for (int i = 0; i < listAdapter.getGroupCount(); i++){
@@ -114,7 +125,6 @@ public class ClosingStock extends AppCompatActivity implements View.OnClickListe
                 } else {
                     btnSave.show();//setVisibility(View.VISIBLE);
                 }
-
             }
 
             @Override
@@ -128,7 +138,6 @@ public class ClosingStock extends AppCompatActivity implements View.OnClickListe
                     getCurrentFocus().clearFocus();
                 }
             }
-
         });
 
         // Listview Group click listener
@@ -137,7 +146,6 @@ public class ClosingStock extends AppCompatActivity implements View.OnClickListe
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v,
                                         int groupPosition, long id) {
-
                 return false;
             }
         });
@@ -153,7 +161,6 @@ public class ClosingStock extends AppCompatActivity implements View.OnClickListe
                     inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                     getCurrentFocus().clearFocus();
                 }
-
             }
         });
 
@@ -168,8 +175,6 @@ public class ClosingStock extends AppCompatActivity implements View.OnClickListe
                     inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                     getCurrentFocus().clearFocus();
                 }
-
-
             }
         });
 
@@ -179,7 +184,6 @@ public class ClosingStock extends AppCompatActivity implements View.OnClickListe
             @Override
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
-
                 return false;
             }
         });
@@ -221,6 +225,12 @@ public class ClosingStock extends AppCompatActivity implements View.OnClickListe
             expListView.invalidateViews();
             if (!checkpopup) {
                 flagcoldroom = flagmccain = flagstoredf = false;
+
+                if(closingStockData != null){
+                    listDataHeader = closingStockData.getStockList();
+                    listDataChild  = closingStockData.getHashMapData();
+                }
+
                 if (validateData(listDataChild, listDataHeader)) {
 
                     Intent intent = new Intent(ClosingStock.this,CheckOutConfirmationActivity.class);
