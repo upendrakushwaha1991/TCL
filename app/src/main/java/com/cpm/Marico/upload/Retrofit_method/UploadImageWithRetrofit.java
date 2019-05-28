@@ -49,6 +49,9 @@ import com.cpm.Marico.getterSetter.NonWindowReasonGetterSetter;
 import com.cpm.Marico.getterSetter.NonWorkingReasonGetterSetter;
 import com.cpm.Marico.getterSetter.PerformancePageGetterSetter;
 import com.cpm.Marico.getterSetter.PosmMasterGetterSetter;
+import com.cpm.Marico.getterSetter.PromoterSkuwiseSaleGetterSetter;
+import com.cpm.Marico.getterSetter.PromoterTDPSaleTargetGetterSetter;
+import com.cpm.Marico.getterSetter.PromoterTargetGetterSetter;
 import com.cpm.Marico.getterSetter.ReferenceVariablesForDownloadActivity;
 import com.cpm.Marico.getterSetter.SampledGetterSetter;
 import com.cpm.Marico.getterSetter.SamplingChecklist;
@@ -1826,9 +1829,42 @@ public class UploadImageWithRetrofit extends ReferenceVariablesForDownloadActivi
                                                     AlertandMessages.showSnackbarMsg(context, "Mapping Tester data not saved");
                                                 }
                                             } else {
-                                              //  throw new java.lang.Exception();
+                                                //  throw new java.lang.Exception();
                                             }
                                             break;
+
+
+                                        case "Promoter_Target":
+                                            if (!data.contains("No Data")) {
+                                                promoterTargetObj = new Gson().fromJson(data, PromoterTargetGetterSetter.class);
+                                                if (promoterTargetObj != null && !db.insertPromoterdata(promoterTargetObj)) {
+                                                    pd.dismiss();
+                                                    AlertandMessages.showSnackbarMsg(context, "Promoter data not saved");
+                                                }
+                                            }
+                                            break;
+
+                                        case "Promoter_Skuwise_Sale":
+                                            if (!data.contains("No Data")) {
+                                                promoterSkuwiseSaleGetterSetter = new Gson().fromJson(data, PromoterSkuwiseSaleGetterSetter.class);
+                                                if (promoterSkuwiseSaleGetterSetter != null && !db.insertPromoterTargetData(promoterSkuwiseSaleGetterSetter)) {
+                                                    pd.dismiss();
+                                                    AlertandMessages.showSnackbarMsg(context, "Promoter Target data not saved");
+                                                }
+                                            }
+                                            break;
+
+                                        case "Promoter_TDP_SaleTarget":
+                                            if (!data.contains("No Data")) {
+                                                promoterTDPSaleTargetGetterSetter = new Gson().fromJson(data, PromoterTDPSaleTargetGetterSetter.class);
+                                                if (promoterTDPSaleTargetGetterSetter != null && !db.insertTDPSaleTargetData(promoterTDPSaleTargetGetterSetter)) {
+                                                    pd.dismiss();
+                                                    AlertandMessages.showSnackbarMsg(context, "TDP Sale Type data not saved");
+                                                }
+                                            }
+                                            break;
+
+
                                     }
                                 }
                             }

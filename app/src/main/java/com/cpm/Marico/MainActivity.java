@@ -28,11 +28,10 @@ import android.widget.TextView;
 
 import com.cpm.Marico.dailyEntry.DetailerActivity;
 import com.cpm.Marico.dailyEntry.LivonActivity;
-import com.cpm.Marico.dailyEntry.PerformanceActivity;
+import com.cpm.Marico.dailyEntry.PerformanceReportActivity;
 import com.cpm.Marico.dailyEntry.PerformanceWebview;
 import com.cpm.Marico.dailyEntry.ServiceActivity;
 import com.cpm.Marico.dailyEntry.StoreListActivity;
-import com.cpm.Marico.dailyEntry.TrainingActivity;
 import com.cpm.Marico.database.MaricoDatabase;
 import com.cpm.Marico.delegates.CoverageBean;
 import com.cpm.Marico.download.DownloadActivity;
@@ -52,13 +51,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private String noticeboard, quiz_url;
     private MaricoDatabase db;
     private View headerView;
-    //private ArrayList<CoverageBean> coverageList;
     private String error_msg;
     private Context context;
     private int downloadIndex;
     private SharedPreferences preferences;
     String user_name;
-    android.support.v7.app.ActionBar actionBar;
     FloatingActionButton fab;
     Toolbar toolbar;
     String visit_date;
@@ -297,13 +294,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             } else {
                 AlertandMessages.showToastMsg(context, "Please Download Data First");
             }
-
+        }else if(id == R.id.nav_report){
+            db.open();
+            if (downloadIndex == 0) {
+                Intent startDownload = new Intent(context,  PerformanceReportActivity.class);
+                startActivity(startDownload);
+                overridePendingTransition(R.anim.activity_in, R.anim.activity_out);
+            } else {
+                AlertandMessages.showToastMsg(context, "Please Download Data First");
+            }
         }
         else if (id == R.id.nav_exit) {
-
-           /* ActivityCompat.finishAffinity(this);
-            Intent intent = new Intent(context, LoginActivity.class);
-            startActivity(intent);*/
             overridePendingTransition(R.anim.activity_back_in, R.anim.activity_back_out);
             finish();
         } else if (id == R.id.nav_services) {

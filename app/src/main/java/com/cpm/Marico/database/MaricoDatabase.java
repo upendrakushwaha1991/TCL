@@ -69,6 +69,12 @@ import com.cpm.Marico.getterSetter.PerformancePage;
 import com.cpm.Marico.getterSetter.PerformancePageGetterSetter;
 import com.cpm.Marico.getterSetter.PosmMaster;
 import com.cpm.Marico.getterSetter.PosmMasterGetterSetter;
+import com.cpm.Marico.getterSetter.PromoterSkuwiseSale;
+import com.cpm.Marico.getterSetter.PromoterSkuwiseSaleGetterSetter;
+import com.cpm.Marico.getterSetter.PromoterTDPSaleTarget;
+import com.cpm.Marico.getterSetter.PromoterTDPSaleTargetGetterSetter;
+import com.cpm.Marico.getterSetter.PromoterTarget;
+import com.cpm.Marico.getterSetter.PromoterTargetGetterSetter;
 import com.cpm.Marico.getterSetter.SampledGetterSetter;
 import com.cpm.Marico.getterSetter.SamplingChecklist;
 import com.cpm.Marico.getterSetter.SamplingChecklistGetterSetter;
@@ -6910,6 +6916,212 @@ public long insertmarketintelligenceData(JourneyPlan jcp, String user_name,Array
 
         } catch (Exception e) {
             Log.d("Exception tester stock",
+                    e.toString());
+            return list;
+        }
+        return list;
+    }
+
+    public boolean insertPromoterdata(PromoterTargetGetterSetter data) {
+        db.delete("Promoter_Target", null, null);
+        List<PromoterTarget> stockData = data.getPromoterTarget();
+        ContentValues values = new ContentValues();
+        try {
+            if (stockData.size() == 0) {
+                return false;
+            }
+
+            for (int i = 0; i < stockData.size(); i++) {
+                values.put("Daily_Value_Target", stockData.get(i).getDailyValueTarget());
+                values.put("MTD_Value_Target", stockData.get(i).getMTDValueTarget());
+                values.put("Daily_Volume_Target", stockData.get(i).getDailyVolumeTarget());
+                values.put("MTD_Volume_Target", stockData.get(i).getMTDVolumeTarget());
+                values.put("Store_Id", stockData.get(i).getStoreId());
+
+                long id = db.insert("Promoter_Target", null, values);
+                if (id == -1) {
+                    throw new Exception();
+                }
+            }
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            Log.d("Exception in promoter target", ex.toString());
+            return false;
+        }
+    }
+
+    public boolean insertPromoterTargetData(PromoterSkuwiseSaleGetterSetter data) {
+        db.delete("Promoter_Skuwise_Sale", null, null);
+        List<PromoterSkuwiseSale> stockData = data.getPromoterSkuwiseSale();
+        ContentValues values = new ContentValues();
+        try {
+            if (stockData.size() == 0) {
+                return false;
+            }
+
+            for (int i = 0; i < stockData.size(); i++) {
+                values.put("Store_Id", stockData.get(i).getStoreId());
+                values.put("Volume_Sale", stockData.get(i).getVolumeSale());
+                values.put("Sku", stockData.get(i).getSku());
+                values.put("Value_Sale", stockData.get(i).getValueSale());
+
+                long id = db.insert("Promoter_Skuwise_Sale", null, values);
+                if (id == -1) {
+                    throw new Exception();
+                }
+            }
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            Log.d("Exception in mapping tester stock", ex.toString());
+            return false;
+        }
+    }
+
+    public ArrayList<PromoterTarget> getMonthlyTargetData() {
+        ArrayList<PromoterTarget> list = new ArrayList<>();
+        Cursor dbcursor = null;
+        JourneyPlan journeyPlan;
+        try {
+            dbcursor = db.rawQuery("Select * from Promoter_Target ", null);
+
+            if (dbcursor != null) {
+                dbcursor.moveToFirst();
+                while (!dbcursor.isAfterLast()) {
+                    PromoterTarget obj = new PromoterTarget();
+                    journeyPlan = getStoreName(dbcursor.getInt(dbcursor.getColumnIndexOrThrow("Store_Id")));
+                    obj.setDailyValueTarget(dbcursor.getInt(dbcursor.getColumnIndexOrThrow("Daily_Value_Target")));
+                    obj.setDailyVolumeTarget(dbcursor.getInt(dbcursor.getColumnIndexOrThrow("Daily_Volume_Target")));
+                    obj.setMTDValueTarget(dbcursor.getInt(dbcursor.getColumnIndexOrThrow("MTD_Value_Target")));
+                    obj.setMTDVolumeTarget(dbcursor.getInt(dbcursor.getColumnIndexOrThrow("MTD_Volume_Target")));
+                    obj.setStoreId(dbcursor.getInt(dbcursor.getColumnIndexOrThrow("Store_Id")));
+                    obj.setStore_name(journeyPlan.getStoreName());
+                    list.add(obj);
+                    dbcursor.moveToNext();
+                }
+                dbcursor.close();
+                return list;
+            }
+
+        } catch (Exception e) {
+            Log.d("Exception tester stock",
+                    e.toString());
+            return list;
+        }
+        return list;
+    }
+
+    private JourneyPlan getStoreName(int store_id) {
+        Cursor dbcursor = null;
+        JourneyPlan sb = null;
+        try {
+            dbcursor = db.rawQuery("SELECT  * FROM Journey_Plan  where Store_Id ='" + store_id + "'", null);
+
+            if (dbcursor != null) {
+                dbcursor.moveToFirst();
+                while (!dbcursor.isAfterLast()) {
+                    sb = new JourneyPlan();
+                    sb.setStoreName(dbcursor.getString(dbcursor.getColumnIndexOrThrow("Store_Name")));
+                    dbcursor.moveToNext();
+                }
+                dbcursor.close();
+                return sb;
+            }
+
+        } catch (Exception e) {
+            Log.d("Exception get JCP!", e.toString());
+            return sb;
+        }
+        return sb;
+    }
+
+    public ArrayList<PromoterSkuwiseSale> getSkuWiseSaleTarget() {
+        ArrayList<PromoterSkuwiseSale> list = new ArrayList<>();
+        Cursor dbcursor = null;
+        JourneyPlan journeyPlan;
+        try {
+            dbcursor = db.rawQuery("Select * from Promoter_Skuwise_Sale ", null);
+
+            if (dbcursor != null) {
+                dbcursor.moveToFirst();
+                while (!dbcursor.isAfterLast()) {
+                    PromoterSkuwiseSale obj = new PromoterSkuwiseSale();
+                    journeyPlan = getStoreName(dbcursor.getInt(dbcursor.getColumnIndexOrThrow("Store_Id")));
+                    obj.setSku(dbcursor.getString(dbcursor.getColumnIndexOrThrow("Sku")));
+                    obj.setValueSale(dbcursor.getInt(dbcursor.getColumnIndexOrThrow("Value_Sale")));
+                    obj.setVolumeSale(dbcursor.getInt(dbcursor.getColumnIndexOrThrow("Volume_Sale")));
+                    obj.setStoreId(dbcursor.getInt(dbcursor.getColumnIndexOrThrow("Store_Id")));
+                    obj.setStore_name(journeyPlan.getStoreName());
+                    list.add(obj);
+                    dbcursor.moveToNext();
+                }
+                dbcursor.close();
+                return list;
+            }
+
+        } catch (Exception e) {
+            Log.d("Exception tester stock",
+                    e.toString());
+            return list;
+        }
+        return list;
+    }
+
+    public boolean insertTDPSaleTargetData(PromoterTDPSaleTargetGetterSetter data) {
+        db.delete("Promoter_TDP_SaleTarget", null, null);
+        List<PromoterTDPSaleTarget> stockData = data.getPromoterTDPSaleTarget();
+        ContentValues values = new ContentValues();
+        try {
+            if (stockData.size() == 0) {
+                return false;
+            }
+
+            for (int i = 0; i < stockData.size(); i++) {
+                values.put("Store_Id", stockData.get(i).getStoreId());
+                values.put("Volume_Sale", stockData.get(i).getVolumeSale());
+                values.put("Time_Period", stockData.get(i).getTimePeriod());
+                values.put("Volume_Target", stockData.get(i).getVolumeTarget());
+
+                long id = db.insert("Promoter_TDP_SaleTarget", null, values);
+                if (id == -1) {
+                    throw new Exception();
+                }
+            }
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            Log.d("Exception in TDP Sale target", ex.toString());
+            return false;
+        }
+    }
+
+    public ArrayList<PromoterTDPSaleTarget> getTDPSaleTargetData() {
+        ArrayList<PromoterTDPSaleTarget> list = new ArrayList<>();
+        Cursor dbcursor = null;
+        JourneyPlan journeyPlan;
+        try {
+            dbcursor = db.rawQuery("Select * from Promoter_TDP_SaleTarget ", null);
+
+            if (dbcursor != null) {
+                dbcursor.moveToFirst();
+                while (!dbcursor.isAfterLast()) {
+                    PromoterTDPSaleTarget obj = new PromoterTDPSaleTarget();
+                    journeyPlan = getStoreName(dbcursor.getInt(dbcursor.getColumnIndexOrThrow("Store_Id")));
+                    obj.setTimePeriod(dbcursor.getString(dbcursor.getColumnIndexOrThrow("Time_Period")));
+                    obj.setVolumeTarget(dbcursor.getInt(dbcursor.getColumnIndexOrThrow("Volume_Target")));
+                    obj.setVolumeSale(dbcursor.getInt(dbcursor.getColumnIndexOrThrow("Volume_Sale")));
+                    obj.setStoreId(dbcursor.getInt(dbcursor.getColumnIndexOrThrow("Store_Id")));
+                    obj.setStore_name(journeyPlan.getStoreName());
+                    list.add(obj);
+                    dbcursor.moveToNext();
+                }
+                dbcursor.close();
+                return list;
+            }
+
+        } catch (Exception e) {
+            Log.d("Exception tdp sale",
                     e.toString());
             return list;
         }

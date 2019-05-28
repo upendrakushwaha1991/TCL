@@ -70,6 +70,9 @@ public class DownloadActivity extends AppCompatActivity {
             keysList.add("Sampling_Checklist");
             keysList.add("Performance");
             keysList.add("Mapping_Tester_Stock");
+            keysList.add("Promoter_Target");
+            keysList.add("Promoter_Skuwise_Sale");
+            keysList.add("Promoter_TDP_SaleTarget");
 
             if (keysList.size() > 0) {
                 for (int i = 0; i < keysList.size(); i++) {

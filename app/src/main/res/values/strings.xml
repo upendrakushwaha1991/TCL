@@ -173,5 +173,10 @@
     <string name="promotion_present_error">Please select promotion present or not</string>
     <string name="reason_id_error">Please select reason</string>
     <string name="image_error">Please click atleast one Image.</string>
+    <string name="menu_report">Performance Report</string>
+    <string name="mtd_volume">MTD Volume</string>
+    <string name="mtd_value">MTD Value</string>
+    <string name="daily_volume">Daily Volume</string>
+    <string name="daily_value">Daily Value</string>
 
 </resources>

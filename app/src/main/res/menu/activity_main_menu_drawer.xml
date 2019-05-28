@@ -24,6 +24,12 @@
             android:id="@+id/nav_training"
             android:icon="@drawable/training"
             android:title="@string/menu_training" />
+
+        <item
+            android:id="@+id/nav_report"
+            android:icon="@drawable/team_performance"
+            android:title="@string/menu_report" />
+
         <item
             android:id="@+id/nav_detailer"
             android:icon="@drawable/detailer"

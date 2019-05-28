@@ -30,11 +30,32 @@
         android:roundIcon="@mipmap/icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".dailyEntry.TesterStockActivity"
+
+        <activity android:name=".dailyEntry.TDPSaleTargetActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan"></activity>
+        <activity
+            android:name=".dailyEntry.SkuWiseSaleActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".dailyEntry.MonthlyTargetActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".dailyEntry.PerformanceReportActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".dailyEntry.TesterStockActivity"
             android:label="@string/title_activity_share_of_shelf"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan" ></activity>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".dailyEntry.CheckOutConfirmationActivity"
             android:label="@string/download_data"
