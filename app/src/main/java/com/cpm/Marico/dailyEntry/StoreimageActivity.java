@@ -605,11 +605,14 @@ public class StoreimageActivity extends AppCompatActivity implements View.OnClic
                     }
                 }
             } else {
-                MaricoDatabase db = new MaricoDatabase(context);
-                db.open();
                 dialog.dismiss();
-                db.deleteTableWithStoreID(store_id);
-                showAlert(getString(R.string.datanotfound) + " " + result);
+                showAlert(result);
+
+//                MaricoDatabase db = new MaricoDatabase(context);
+//                db.open();
+//                dialog.dismiss();
+//                db.deleteTableWithStoreID(store_id);
+//                showAlert(getString(R.string.datanotfound) + " " + result);
             }
         }
 

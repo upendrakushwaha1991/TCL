@@ -95,14 +95,15 @@ public class ClosingStock extends AppCompatActivity implements View.OnClickListe
             }
         }
 
-        // preparing list data
-        prepareListData();
 
         if(closingStockData != null){
             listAdapter = new ExpandableListAdapter(this,closingStockData.getStockList(),closingStockData.getHashMapData());
         }else{
+            // preparing list data
+            prepareListData();
             listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
         }
+
 
         // setting list adapter
         expListView.setAdapter(listAdapter);
@@ -321,12 +322,12 @@ public class ClosingStock extends AppCompatActivity implements View.OnClickListe
                     final EditText Caption = (EditText) v;
                     String value1 = Caption.getText().toString().replaceFirst("^0+(?!$)", "");
                     if (value1.equals("")) {
-                        _listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition).setEd_closingFacing("");
+                       childText.setEd_closingFacing("");
                     } else {
                         int closingS = Integer.parseInt(value1);
                         if (closingS <= consolidateValue) {
                             ischangedflag = true;
-                            _listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition).setEd_closingFacing(value1);
+                            childText.setEd_closingFacing(value1);
                         } else {
                             checkpopup = true;
                             AlertDialog.Builder builder = new AlertDialog.Builder(ClosingStock.this);

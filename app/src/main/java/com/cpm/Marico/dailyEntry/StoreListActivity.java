@@ -254,10 +254,7 @@ public class StoreListActivity extends AppCompatActivity implements View.OnClick
             viewHolder.txt.setText(current.getStoreName() + " - " + current.getStoreType() + " - " + current.getStoreCategory() /*+ "," + current.getClassification()*/);
             viewHolder.address.setText(current.getAddress1() + "\n" + "Store Id - " + current.getStoreId() + "\n" + "Store Code - " + current.getStore_Code());
 
-            if (current.getUploadStatus().equalsIgnoreCase(CommonString.KEY_VALID)) {
-                viewHolder.chkbtn.setVisibility(View.VISIBLE);
-                viewHolder.imageview.setVisibility(View.INVISIBLE);
-            } else if (current.getUploadStatus().equalsIgnoreCase(CommonString.KEY_U)) {
+            if (current.getUploadStatus().equalsIgnoreCase(CommonString.KEY_U)) {
                 viewHolder.imageview.setVisibility(View.VISIBLE);
                 viewHolder.imageview.setBackgroundResource(R.drawable.tick_u);
                 viewHolder.chkbtn.setVisibility(View.INVISIBLE);
@@ -283,6 +280,9 @@ public class StoreListActivity extends AppCompatActivity implements View.OnClick
                 viewHolder.imageview.setVisibility(View.INVISIBLE);
                 viewHolder.chkbtn.setVisibility(View.VISIBLE);
                 viewHolder.Cardbtn.setCardBackgroundColor(getResources().getColor(current.getColourCode()));
+            } else if (current.getUploadStatus().equalsIgnoreCase(CommonString.KEY_VALID)) {
+                viewHolder.chkbtn.setVisibility(View.VISIBLE);
+                viewHolder.imageview.setVisibility(View.INVISIBLE);
             } else if (current.getUploadStatus().equalsIgnoreCase(CommonString.KEY_CHECK_IN) || db.getSpecificCoverageData(String.valueOf(current.getStoreId()), current.getVisitDate()).size() > 0) {
                 //viewHolder.imageview.setVisibility(View.INVISIBLE);
                 viewHolder.chkbtn.setVisibility(View.INVISIBLE);
