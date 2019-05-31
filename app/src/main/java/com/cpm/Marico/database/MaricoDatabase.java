@@ -6088,6 +6088,8 @@ public long insertmarketintelligenceData(JourneyPlan jcp, String user_name,Array
         return list;
     }
 
+
+
     public long insertPromotionCompleteData(HashMap<CategoryMaster, List<CategoryMaster>> listDataChild, List<CategoryMaster> listDataHeader, String store_id, String menu_id, String visit_date, String username) {
         long l = 0, common_id = 0, l2 = 0;
         db.delete(CommonString.TABLE_PROMOTION_HEADER_DATA, "STORE_ID ='" + store_id + "'", null);

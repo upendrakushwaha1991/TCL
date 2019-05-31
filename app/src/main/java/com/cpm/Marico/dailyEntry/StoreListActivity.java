@@ -1740,11 +1740,14 @@ distance > distanceGeoPhence) {
                     break;
 
                 case 10:
-                    if (db.isTesterStockFilled(journeyPlan.getStoreId().toString())) {
+                    if(db.getTesterStockData(journeyPlan.getStoreTypeId(), journeyPlan.getStateId(), journeyPlan.getStoreCategoryId()).size() > 0) {
+                        if (db.isTesterStockFilled(journeyPlan.getStoreId().toString())) {
 
-                    } else {
-                        status = false;
-
+                        } else {
+                            status = false;
+                        }
+                    }else{
+                        status = true;
                     }
                     break;
 
