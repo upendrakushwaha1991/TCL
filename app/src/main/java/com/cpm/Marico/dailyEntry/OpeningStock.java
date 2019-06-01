@@ -117,7 +117,7 @@ public class OpeningStock extends AppCompatActivity implements View.OnClickListe
         listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
         // setting list adapter
         expListView.setAdapter(listAdapter);
-        for (int i = 0; i < listAdapter.getGroupCount(); i++){
+        for (int i = 0; i < listAdapter.getGroupCount(); i++) {
             expListView.expandGroup(i);
         }
 
@@ -240,20 +240,20 @@ public class OpeningStock extends AppCompatActivity implements View.OnClickListe
             expListView.clearFocus();
             expListView.invalidateViews();
             if (snackbar == null || !snackbar.isShown()) {
-                 if (validateData(listDataChild, listDataHeader)) {
-                     db.open();
-                     //If data already inserted
-                     if (db.checkStock(jcpGetset.getStoreId().toString())) {
-                         //Update
-                         db.UpdateHeaderOpeningStocklistData(jcpGetset, listDataHeader);
-                         db.UpdateOpeningStocklistData(jcpGetset, listDataChild, listDataHeader);
-                     } else {
-                         //Insert
-                         db.InsertHeaderOpeningStocklistData(jcpGetset, listDataHeader);
-                         db.InsertOpeningStocklistData(jcpGetset, listDataChild, listDataHeader);
-                     }
-                     finish();
-                     overridePendingTransition(R.anim.activity_back_in, R.anim.activity_back_out);
+                if (validateData(listDataChild, listDataHeader)) {
+                    db.open();
+                    //If data already inserted
+                    if (db.checkStock(jcpGetset.getStoreId().toString())) {
+                        //Update
+                        db.UpdateHeaderOpeningStocklistData(jcpGetset, listDataHeader);
+                        db.UpdateOpeningStocklistData(jcpGetset, listDataChild, listDataHeader);
+                    } else {
+                        //Insert
+                        db.InsertHeaderOpeningStocklistData(jcpGetset, listDataHeader);
+                        db.InsertOpeningStocklistData(jcpGetset, listDataChild, listDataHeader);
+                    }
+                    finish();
+                    overridePendingTransition(R.anim.activity_back_in, R.anim.activity_back_out);
               /*  AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setMessage("Are you sure you want to save")
                         .setCancelable(false)
@@ -334,10 +334,10 @@ public class OpeningStock extends AppCompatActivity implements View.OnClickListe
             }
             TextView txtListChild = (TextView) convertView.findViewById(R.id.lblListItem);
             final ViewHolder finalHolder = holder;
-            if (childText.getFocus().equals("1")){
+            if (childText.getFocus().equals("1")) {
                 txtListChild.setTextColor(Color.GREEN);
 
-            }else {
+            } else {
                 txtListChild.setTextColor(Color.BLACK);
             }
             txtListChild.setText(childText.getSku());
@@ -651,7 +651,7 @@ public class OpeningStock extends AppCompatActivity implements View.OnClickListe
     }
 
     public class ViewHolder {
-        EditText ed_openingFacing, etOpening_Stock, etOpening_Stock_Facingg,textcolore;
+        EditText ed_openingFacing, etOpening_Stock, etOpening_Stock_Facingg, textcolore;
         CardView cardView;
         TextView txt_date;
     }
@@ -932,6 +932,4 @@ public class OpeningStock extends AppCompatActivity implements View.OnClickListe
         }
         return bitmap;
     }
-
-
 }
