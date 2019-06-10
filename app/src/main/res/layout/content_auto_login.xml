@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.cpm.Marico.AutoLoginActivity"
+    tools:context="com.cpm.Tcl.AutoLoginActivity"
     tools:showIn="@layout/activity_auto_login"
     android:clickable="false">
 
@@ -31,7 +31,7 @@
             android:textSize="18sp"
             />
 
-        <com.cpm.Marico.blurlockview.BlurLockView
+        <com.cpm.Tcl.blurlockview.BlurLockView
             android:id="@+id/blurlockview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
