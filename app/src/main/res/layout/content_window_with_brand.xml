@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.cpm.Marico.dailyEntry.WindowWithBrandActivity"
+    tools:context="com.cpm.Tcl.dailyEntry.WindowWithBrandActivity"
     tools:showIn="@layout/activity_window_with_brand"
     android:background="@color/grey_background">
 

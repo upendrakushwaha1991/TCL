@@ -4,7 +4,7 @@ apply plugin: 'io.fabric'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.cpm.Marico"
+        applicationId "com.cpm.Tcl"
         minSdkVersion 17
         targetSdkVersion 26
         versionCode 5

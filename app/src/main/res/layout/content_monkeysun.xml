@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.cpm.Marico.dailyEntry.MonkeysunActivity"
+    tools:context="com.cpm.Tcl.dailyEntry.MonkeysunActivity"
     tools:showIn="@layout/activity_monkeysun">
     <LinearLayout
         android:layout_width="match_parent"
